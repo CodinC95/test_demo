@@ -1,16 +1,17 @@
-const jwt = require("jsonwebtoken")
 
+const jwt = require("jsonwebtoken")
+require('dotenv').config()
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-const ACCESS_TOKEN_EXPIRATION = '15m';
+const ACCESS_TOKEN_EXPIRATION = '15d';
 const REFRESH_TOKEN_EXPIRATION = '7d';
 
-const generateAccessToken =(userId)=> {
-    return jwt.sign(userId, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+const generateAccessToken =(userInfo)=> {
+    return jwt.sign(userInfo, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
   }
   
-const generateRefreshToken =(userId) => {
-    return jwt.sign(userId, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRATION });
+const generateRefreshToken =(userInfo) => {
+    return jwt.sign(userInfo, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRATION });
 }
 
 const authenticateToken = (req, res, next) =>{
@@ -29,12 +30,27 @@ const authenticateToken = (req, res, next) =>{
       req.user = user;
       next();
     });
-  }
+}
+
+const createResponse = async(res,statusCode,data,message =null) =>{
+
+  return res.status(statusCode).json({
+    status:statusCode,
+    data:data,
+    message:message
+  })
+
+}
+
+
+
+
 
 
 
 module.exports= {
     generateAccessToken,
     generateRefreshToken,
-    authenticateToken
+    authenticateToken,
+    createResponse
 }

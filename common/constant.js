@@ -5,3 +5,15 @@ module.exports.messageError = Object.freeze({
     login_error: "Invalid credentials",
     server_error:"Server Error"
 })
+
+module.exports.userInterface = Object.freeze({
+    email:"email",
+    firstName:"firstName",
+    lastName:"lastName",
+    password:"password"
+})
+
+module.exports.Flag = Object.freeze({
+    OK:"SUCCESS",
+    ERROR:"ERROR"
+})
